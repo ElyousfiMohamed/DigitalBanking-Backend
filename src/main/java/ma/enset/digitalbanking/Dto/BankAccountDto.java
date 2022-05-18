@@ -6,5 +6,4 @@ import ma.enset.digitalbanking.Model.Customer;
 @Data
 public class BankAccountDto {
     private String type;
-    private CustomerDto customer;
 }

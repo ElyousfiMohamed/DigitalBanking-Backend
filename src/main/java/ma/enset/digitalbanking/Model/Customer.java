@@ -16,8 +16,9 @@ public class Customer {
     @Id
     @Column(length = 200)
     private String id;
-    private String name;
+    private String nom;
     private String email;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
     List<BankAccount> bankAccountList = new ArrayList<>();

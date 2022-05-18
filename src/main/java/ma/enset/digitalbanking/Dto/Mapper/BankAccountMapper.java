@@ -19,52 +19,50 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BankAccountMapper {
     private CustomerMapper customerMapper;
-    public BankAccountDto toBankAccountDto(BankAccount bankAccount) {
-        BankAccountDto bankAccountDto;
-        if(bankAccount instanceof CurrentAccount) {
-            bankAccountDto = new CurrentAccountDto();
-            ((CurrentAccountDto) bankAccountDto).setId(bankAccount.getId());
-            ((CurrentAccountDto) bankAccountDto).setBalance(bankAccount.getBalance());
-            ((CurrentAccountDto) bankAccountDto).setStatus(bankAccount.getStatus());
-            ((CurrentAccountDto) bankAccountDto).setOverDraft(((CurrentAccount) bankAccount).getOverDraft());
-            bankAccountDto.setType(CurrentAccount.class.getSimpleName());
-        } else {
-            bankAccountDto = new SavingAccountDto();
-            ((SavingAccountDto) bankAccountDto).setId(bankAccount.getId());
-            ((SavingAccountDto) bankAccountDto).setBalance(bankAccount.getBalance());
-            ((SavingAccountDto) bankAccountDto).setStatus(bankAccount.getStatus());
-            ((SavingAccountDto) bankAccountDto).setInterestRate(((SavingAccount) bankAccount).getInterestRate());
-            bankAccountDto.setType(SavingAccount.class.getSimpleName());
-        }
-        bankAccountDto.setCustomer(customerMapper.toCustomerDto(bankAccount.getCustomer()));
-        return bankAccountDto;
+
+    public CurrentAccountDto toCurrentBankAccountDto(CurrentAccount saved) {
+        CurrentAccountDto currentAccountDto = new CurrentAccountDto();
+        BeanUtils.copyProperties(saved,currentAccountDto);
+        currentAccountDto.setCustomer(customerMapper.toCustomerDto(saved.getCustomer()));
+        currentAccountDto.setType(CurrentAccount.class.getSimpleName());
+        return currentAccountDto;
     }
 
-    public BankAccount fromBankAccountDto(BankAccountDto bankAccountDto) {
-        BankAccount bankAccount;
-        if(bankAccountDto.getType().equals(CurrentAccount.class.getSimpleName())) {
-            bankAccount = new CurrentAccount();
-            bankAccount.setId(((CurrentAccountDto) bankAccountDto).getId());
-            bankAccount.setBalance(((CurrentAccountDto) bankAccountDto).getBalance());
-            bankAccount.setStatus(((CurrentAccountDto) bankAccountDto).getStatus());
-            ((CurrentAccount) bankAccount).setOverDraft(((CurrentAccountDto) bankAccountDto).getOverDraft());
-        } else {
-            bankAccount = new SavingAccount();
-            bankAccount.setId(((SavingAccountDto) bankAccountDto).getId());
-            bankAccount.setBalance(((SavingAccountDto) bankAccountDto).getBalance());
-            bankAccount.setStatus(((SavingAccountDto) bankAccountDto).getStatus());
-            ((SavingAccount) bankAccount).setInterestRate(((SavingAccountDto) bankAccountDto).getInterestRate());
-        }
-        return bankAccount;
+    public SavingAccountDto toSavingBankAccountDto(SavingAccount saved) {
+        SavingAccountDto savingAccountDto = new SavingAccountDto();
+        BeanUtils.copyProperties(saved,savingAccountDto);
+        savingAccountDto.setCustomer(customerMapper.toCustomerDto(saved.getCustomer()));
+        savingAccountDto.setType(SavingAccount.class.getSimpleName());
+        return savingAccountDto;
     }
 
-    public List<BankAccountDto> toBankAccountDtos(List<BankAccount> bankAccounts) {
-        List<BankAccountDto> bankAccountDtos = bankAccounts.stream().map(bankAccount -> toBankAccountDto(bankAccount)).collect(Collectors.toList());
-        return bankAccountDtos;
+    public CurrentAccount fromCurrentBankAccountDto(CurrentAccountDto saved) {
+        CurrentAccount currentAccount = new CurrentAccount();
+        BeanUtils.copyProperties(saved,currentAccount);
+        currentAccount.setCustomer(customerMapper.fromCustomerDto(saved.getCustomer()));
+        return currentAccount;
     }
 
-    public List<BankAccount> fromBankAccountDtos(List<BankAccountDto> bankAccountDtos) {
-        List<BankAccount> bankAccounts = bankAccountDtos.stream().map(bankAccountDto -> fromBankAccountDto(bankAccountDto)).collect(Collectors.toList());
-        return bankAccounts;
+    public SavingAccount fromSavingBankAccountDto(SavingAccountDto saved) {
+        SavingAccount savingAccount = new SavingAccount();
+        BeanUtils.copyProperties(saved,savingAccount);
+        savingAccount.setCustomer(customerMapper.fromCustomerDto(saved.getCustomer()));
+        return savingAccount;
+    }
+
+    public List<CurrentAccountDto> toCurrentBankAccountDtos(List<CurrentAccount> saved) {
+        return saved.stream().map(currentAccount -> toCurrentBankAccountDto(currentAccount)).collect(Collectors.toList());
+    }
+
+    public List<SavingAccountDto> toSavingBankAccountDtos(List<SavingAccount> saved) {
+        return saved.stream().map(savingAccount -> toSavingBankAccountDto(savingAccount)).collect(Collectors.toList());
+    }
+
+    public List<CurrentAccount> fromCurrentBankAccountDto(List<CurrentAccountDto> saved) {
+        return saved.stream().map(currentAccountDto -> fromCurrentBankAccountDto(currentAccountDto)).collect(Collectors.toList());
+    }
+
+    public List<SavingAccount> fromSavingBankAccountDtos(List<SavingAccountDto> saved) {
+        return saved.stream().map(savingAccountDto -> fromSavingBankAccountDto(savingAccountDto)).collect(Collectors.toList());
     }
 }

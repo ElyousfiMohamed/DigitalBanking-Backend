@@ -14,5 +14,6 @@ public class SavingAccountDto extends BankAccountDto{
     private String id;
     private double balance;
     private AccountStatus status;
+    private CustomerDto customer;
     private double interestRate;
 }

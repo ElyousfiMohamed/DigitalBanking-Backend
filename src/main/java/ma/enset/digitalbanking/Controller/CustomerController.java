@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @ResponseBody
 @AllArgsConstructor
+@CrossOrigin("*")
 public class CustomerController {
     private DigitalBankingService digitalBankingService;
 
@@ -19,10 +20,10 @@ public class CustomerController {
         return digitalBankingService.getCustomers();
     }
 
-    @GetMapping("/customers/{id}")
+    /*@GetMapping("/customers/{id}")
     public CustomerDto customer(@PathVariable String id) throws CustomerNotFoundException {
         return digitalBankingService.getCustomer(id);
-    }
+    }*/
 
     @PostMapping("/customers")
     public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) {

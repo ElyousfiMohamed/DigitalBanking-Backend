@@ -20,6 +20,7 @@ public class Operation {
     private Date date;
     private double amount;
     private OperationType operationType;
+    private String desciption;
 
     @ManyToOne
     private BankAccount bankAccount;

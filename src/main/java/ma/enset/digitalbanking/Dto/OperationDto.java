@@ -12,4 +12,5 @@ public class OperationDto {
     private Date date;
     private double amount;
     private OperationType operationType;
+    private String desciption;
 }

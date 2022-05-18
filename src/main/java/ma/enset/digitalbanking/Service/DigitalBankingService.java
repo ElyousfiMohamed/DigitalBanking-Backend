@@ -18,13 +18,15 @@ public interface DigitalBankingService {
 
     CustomerDto saveCustomer(CustomerDto customerDto);
 
-    BankAccountDto saveBankAccount(double balance, String type, String customerId) throws CustomerNotFoundException;
+    CurrentAccountDto saveCurrentAccount(double balance, double overDraft, String customerId) throws CustomerNotFoundException;
 
-    void debit(String bankAccountId, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException;
+    SavingAccountDto saveSavingAccount(double balance, double interestRate, String customerId) throws CustomerNotFoundException;
 
-    void credit(String bankAccountId, double amount) throws BankAccountNotFoundException;
+    void debit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
 
-    void transfer(String bankAccountSrc, String bankAccountDst, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException;
+    void credit(String bankAccountId, double amount, String description) throws BankAccountNotFoundException;
+
+    void transfer(String bankAccountSrc, String bankAccountDst, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
 
     CustomerDto updateCustomer(CustomerDto customerDto, String id);
 
@@ -34,9 +36,14 @@ public interface DigitalBankingService {
 
     List<OperationDto> getOperations();
 
-    BankAccountDto updateBankAccount(BankAccountDto bankAccountDto, String id);
-
     void deleteBankAccount(String id);
 
+    List<OperationDto> accountHistory(String id);
+
+    AccountHistoryDto accountHistoryPages(String id, int page, int size) throws BankAccountNotFoundException;
+
+    CurrentAccountDto updateCurrentAccount(CurrentAccountDto currentAccountDto);
+
+    SavingAccountDto updateSavingAccount(SavingAccountDto savingAccountDto);
 }
 
