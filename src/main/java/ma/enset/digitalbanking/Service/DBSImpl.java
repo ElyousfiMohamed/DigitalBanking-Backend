@@ -204,5 +204,12 @@ public class DBSImpl implements DigitalBankingService {
         return bankAccountMapper.toSavingBankAccountDto(saved);
     }
 
+    @Override
+    public List<CustomerDto> searchCustomers(String keyword) {
+        List<Customer> customers=customerRepository.searchCustomer(keyword);
+        List<CustomerDto> customerDTOS = customerMapper.toCustomerDtos(customers);
+        return customerDTOS;
+    }
+
 
 }

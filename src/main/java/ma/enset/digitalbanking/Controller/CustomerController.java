@@ -20,10 +20,15 @@ public class CustomerController {
         return digitalBankingService.getCustomers();
     }
 
-    /*@GetMapping("/customers/{id}")
+    @GetMapping("/customers/{id}")
     public CustomerDto customer(@PathVariable String id) throws CustomerNotFoundException {
         return digitalBankingService.getCustomer(id);
-    }*/
+    }
+
+    @GetMapping("/customers/search")
+    public List<CustomerDto> searchCustomers(@RequestParam(name = "kw",defaultValue = "") String kw){
+        return digitalBankingService.searchCustomers("%"+kw+"%");
+    }
 
     @PostMapping("/customers")
     public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) {

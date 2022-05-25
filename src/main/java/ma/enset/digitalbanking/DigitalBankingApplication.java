@@ -28,6 +28,7 @@ public class DigitalBankingApplication {
         SpringApplication.run(DigitalBankingApplication.class, args);
     }
 
+
     @Bean
     CommandLineRunner commandLineRunner(DigitalBankingService digitalBankingService) {
         return args -> {
@@ -56,7 +57,7 @@ public class DigitalBankingApplication {
                         id = ((SavingAccountDto) bankAccount).getId();
                     }
                     digitalBankingService.credit(id,1000+Math.random()*50000,"Credit");
-                    digitalBankingService.credit(id,1000+Math.random()*5000,"Debit");
+                    digitalBankingService.debit(id,1000+Math.random()*5000,"Debit");
                 }
             }
         };
