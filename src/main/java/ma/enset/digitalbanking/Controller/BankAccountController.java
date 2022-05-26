@@ -84,12 +84,13 @@ public class BankAccountController {
     }
 
     @RequestMapping(value = "/bankAccounts/transfer",method = RequestMethod.POST)
-    public void transfer(@RequestBody TransferDTO transferDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+    public TransferDTO transfer(@RequestBody TransferDTO transferDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
         System.out.println("YOOOOO");
         this.digitalBankingService.transfer(
                 transferDTO.getAccountSource(),
                 transferDTO.getAccountDestination(),
                 transferDTO.getAmount(),
                 transferDTO.getDescription());
+        return transferDTO;
     }
 }
