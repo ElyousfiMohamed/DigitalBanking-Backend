@@ -178,7 +178,7 @@ public class DBSImpl implements DigitalBankingService {
     public AccountHistoryDto accountHistoryPages(String id, int page, int size) throws BankAccountNotFoundException {
         BankAccount bankAccount = bankAccountRepository.findById(id)
                 .orElseThrow(()-> new BankAccountNotFoundException("Bank account not found"));
-        Page<Operation> operations = operationRepository.findByBankAccountId(id, PageRequest.of(page,size));
+        Page<Operation> operations = operationRepository.findByBankAccountIdOrderByIdDesc(id, PageRequest.of(page,size));
         List<OperationDto> operationsdto = operationMapper.toOperationDtos(operations.getContent());
         AccountHistoryDto accountHistoryDto = new AccountHistoryDto();
         accountHistoryDto.setOperationDtos(operationsdto);

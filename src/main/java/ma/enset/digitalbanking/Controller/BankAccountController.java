@@ -71,20 +71,21 @@ public class BankAccountController {
         digitalBankingService.deleteBankAccount(id);
     }
 
-    @RequestMapping(value = "/accounts/debit",method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccounts/debit",method = RequestMethod.POST)
     public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
         this.digitalBankingService.debit(debitDTO.getAccountId(),debitDTO.getAmount(),debitDTO.getDescription());
         return debitDTO;
     }
 
-    @RequestMapping(value = "/accounts/credit",method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccounts/credit",method = RequestMethod.POST)
     public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException {
         this.digitalBankingService.credit(creditDTO.getAccountId(),creditDTO.getAmount(),creditDTO.getDescription());
         return creditDTO;
     }
 
-    @RequestMapping(value = "/accounts/transfer",method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccounts/transfer",method = RequestMethod.POST)
     public void transfer(@RequestBody TransferDTO transferDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        System.out.println("YOOOOO");
         this.digitalBankingService.transfer(
                 transferDTO.getAccountSource(),
                 transferDTO.getAccountDestination(),
