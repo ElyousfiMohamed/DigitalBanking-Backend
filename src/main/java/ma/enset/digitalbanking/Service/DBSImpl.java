@@ -6,6 +6,7 @@ import ma.enset.digitalbanking.Dto.Mapper.*;
 import ma.enset.digitalbanking.Exception.*;
 import ma.enset.digitalbanking.Model.*;
 import ma.enset.digitalbanking.Repository.*;
+import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -209,6 +210,18 @@ public class DBSImpl implements DigitalBankingService {
         List<Customer> customers=customerRepository.searchCustomer(keyword);
         List<CustomerDto> customerDTOS = customerMapper.toCustomerDtos(customers);
         return customerDTOS;
+    }
+
+    @Override
+    public List<BankAccountDto> bankAccountsByCustomerId(String id) {
+        return bankAccountRepository.findBankAccountsByCustomerId(id).stream().map(
+                bankAccount -> {
+                    if (bankAccount instanceof SavingAccount)
+                        return bankAccountMapper.toSavingBankAccountDto((SavingAccount) bankAccount);
+                    else
+                        return bankAccountMapper.toCurrentBankAccountDto((CurrentAccount) bankAccount);
+                }
+        ).collect(Collectors.toList());
     }
 
 

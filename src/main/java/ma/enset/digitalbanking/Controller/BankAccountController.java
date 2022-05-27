@@ -32,6 +32,11 @@ public class BankAccountController {
         return digitalBankingService.accountHistory(id);
     }
 
+    @GetMapping("/bankAccounts/{id}/customers")
+    public List<BankAccountDto> customerBankAccounts(@PathVariable String id) {
+        return digitalBankingService.bankAccountsByCustomerId(id);
+    }
+
     @GetMapping("/bankAccounts/{id}/pgOperations")
     public AccountHistoryDto bankAccountHistory(@PathVariable String id,
                                                 @RequestParam(name = "page",defaultValue = "0") int page,

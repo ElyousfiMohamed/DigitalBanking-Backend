@@ -47,5 +47,8 @@ public interface DigitalBankingService {
     SavingAccountDto updateSavingAccount(SavingAccountDto savingAccountDto);
 
     List<CustomerDto> searchCustomers(String keyword);
+
+    List<BankAccountDto> bankAccountsByCustomerId(String id);
+
 }
 

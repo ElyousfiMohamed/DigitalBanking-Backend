@@ -8,6 +8,7 @@ import ma.enset.digitalbanking.Exception.CustomerNotFoundException;
 import ma.enset.digitalbanking.Model.BankAccount;
 import ma.enset.digitalbanking.Model.CurrentAccount;
 import ma.enset.digitalbanking.Model.SavingAccount;
+import ma.enset.digitalbanking.Security.Service.IServiceSecurity;
 import ma.enset.digitalbanking.Service.DigitalBankingService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ public class DigitalBankingApplication {
 
 
     @Bean
-    CommandLineRunner commandLineRunner(DigitalBankingService digitalBankingService) {
+    CommandLineRunner commandLineRunner(DigitalBankingService digitalBankingService, IServiceSecurity serviceSecurity) {
         return args -> {
             Stream.of("Mohamed", "Oussama", "Fatima", "Firdaousse").forEach(name ->
                 digitalBankingService.saveCustomer(new CustomerDto(null,name,name+"@gmail.com","https://www.bootdey.com/app/webroot/img/Content/avatar/avatar7.png"))
@@ -38,10 +39,12 @@ public class DigitalBankingApplication {
 
             digitalBankingService.getCustomers().forEach(c-> {
                 try {
-                    digitalBankingService
-                            .saveCurrentAccount(1000+Math.random()*50000, 500,c.getId());
-                    digitalBankingService
-                            .saveSavingAccount(1000+Math.random()*50000, Math.random()*4+1,c.getId());
+                    for (int i = 0; i < 2; i++) {
+                        digitalBankingService
+                                .saveCurrentAccount(1000+Math.random()*50000, 500,c.getId());
+                        digitalBankingService
+                                .saveSavingAccount(1000+Math.random()*50000, Math.random()*4+1,c.getId());
+                    }
                 } catch (CustomerNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -60,6 +63,16 @@ public class DigitalBankingApplication {
                     digitalBankingService.debit(id,1000+Math.random()*5000,"Debit");
                 }
             }
+
+            serviceSecurity.saveNewUser("mohamed", "1234", "1234");
+            serviceSecurity.saveNewUser("hamza", "1234", "1234");
+
+            serviceSecurity.saveNewRole("USER", "");
+            serviceSecurity.saveNewRole("ADMIN", "");
+
+            serviceSecurity.addRoleToUser("mohamed", "USER");
+            serviceSecurity.addRoleToUser("mohamed", "ADMIN");
+            serviceSecurity.addRoleToUser("hamza", "USER");
         };
     }
 }
