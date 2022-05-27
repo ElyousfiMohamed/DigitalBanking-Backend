@@ -1,5 +1,6 @@
 package ma.enset.digitalbanking.Security.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class AppUser {
     private boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<AppRole> appRoles = new ArrayList<>();
 }

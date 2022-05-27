@@ -60,12 +60,12 @@ public class DigitalBankingApplication {
                         id = ((SavingAccountDto) bankAccount).getId();
                     }
                     digitalBankingService.credit(id,1000+Math.random()*50000,"Credit");
-                    digitalBankingService.debit(id,1000+Math.random()*5000,"Debit");
+                    digitalBankingService.debit(id,1000+Math.random()*500,"Debit");
                 }
             }
 
-            serviceSecurity.saveNewUser("mohamed", "1234", "1234");
-            serviceSecurity.saveNewUser("hamza", "1234", "1234");
+            serviceSecurity.saveNewUser("mohamed", "1234");
+            serviceSecurity.saveNewUser("hamza", "1234");
 
             serviceSecurity.saveNewRole("USER", "");
             serviceSecurity.saveNewRole("ADMIN", "");

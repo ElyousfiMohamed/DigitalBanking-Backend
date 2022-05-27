@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -23,11 +24,7 @@ public class ServiceSecurityImpl implements IServiceSecurity {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public AppUser saveNewUser(String username, String password, String verifyPassword) {
-        if (!password.equals(verifyPassword)) {
-            throw new RuntimeException("password does not match");
-        }
-
+    public AppUser saveNewUser(String username, String password) {
         String passwordHashed = passwordEncoder.encode(password);
 
         AppUser appUser = new AppUser();
@@ -36,6 +33,24 @@ public class ServiceSecurityImpl implements IServiceSecurity {
         appUser.setPassword(passwordHashed);
         appUser.setActive(true);
         appUserRepository.save(appUser);
+
+        return appUser;
+    }
+
+    @Override
+    public AppUser saveNewUser(String username, String password, String repassword) {
+        AppUser appUser = new AppUser();
+        if (password.equals(repassword)) {
+            String passwordHashed = passwordEncoder.encode(password);
+
+            appUser.setUserId(UUID.randomUUID().toString());
+            appUser.setUserName(username);
+            appUser.setPassword(passwordHashed);
+            appUser.setActive(true);
+            appUserRepository.save(appUser);
+        } else {
+            throw new RuntimeException("Password and Repassword not match !!!");
+        }
 
         return appUser;
     }
@@ -68,6 +83,16 @@ public class ServiceSecurityImpl implements IServiceSecurity {
 
         appUser.getAppRoles().add(appRole);
 
+    }
+
+    @Override
+    public List<AppUser> getAllUsers() {
+    	return appUserRepository.findAll();
+    }
+
+    @Override
+    public List<AppRole> getAllRoles() {
+        return appRoleRepository.findAll();
     }
 
     @Override
